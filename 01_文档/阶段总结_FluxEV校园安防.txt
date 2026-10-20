@@ -1,0 +1,242 @@
+================================================================================
+FluxEV x Geolife 校园夜间安防仿真 —— 阶段总结
+（本轮：异常率虚高的问题定位与修复 / 可视化 / 全图英文化 / Nature 风格图表）
+生成时间：2026-10-16
+================================================================================
+
+【0】一句话结论
+--------------------------------------------------------------------------------
+本轮把"静止型轨迹让异常率虚高"从现象追到了根因：不是阈值不好调，而是
+FluxEV/SPOT 在训练段波动峰太少时 GPD 阈值退化成 NaN，导致"任何波动都判满分"。
+已修复；并补上渐进入侵的电子围栏、平滑过程可视化，以及 Nature 风格的图表集。
+所有图已改为英文标注。
+
+【1】项目目标（回顾）
+--------------------------------------------------------------------------------
+用无监督极值理论(EVT)方法处理真实行人轨迹，输出每个时刻的连续异常分数(0~1)
+与四类行为二分类标签，验证"边缘设备亚秒级告警"的可行性。
+
+  · 方法：借鉴 FluxEV（WSDM 2021）——速度/加速度/方向变化率多维时序 +
+          波动提取 + 一阶/二阶平滑 + MOM 自动阈值
+  · 数据：Microsoft Geolife 1.3（182 用户、18670 个 .plt）
+  · 平台定位：RV1126 等边缘芯片，无需训练、可解释
+  · 四类异常：异常逗留(>5min) / 多人聚集(深夜>=2人) / 抽烟(2~5min短停) /
+              翻越禁区(电子围栏)
+
+【2】本轮核心问题：异常率虚高，虚在哪
+--------------------------------------------------------------------------------
+现象：跑清华校区附近的真实轨迹，异常率动辄 88%~100%，没有区分度。
+
+逐层剥开：
+  (a) 这些轨迹大多是"驻留型"记录——人待在校园里不动/微动，静止点占比 64%~99%；
+      于是 dwell 分项长期贴着高分，把整条轨迹淹没。
+  (b) 但更关键的根因不在这里，而在检测器本身。
+
+【3】根因定位（两个 FluxEV/SPOT 缺陷）
+--------------------------------------------------------------------------------
+缺陷 A：训练段为空 / 点数不足 -> IndexError 直接崩溃
+  文件：FluxEV/spot_pipe.py  第 153 行
+      self.init_threshold = S[int(level * n_init)]
+  当 n_init==0 时 S 是空数组，取下标直接越界。
+  原代码只 try/except 了 ZeroDivisionError，没兜住 IndexError。
+  实测：18670 个文件扫出的 2004 条候选中，大量轨迹跑到这里就崩。
+
+缺陷 B（真正让异常率虚高的元凶）：峰数 Nt<=1 -> GPD 阈值退化为 NaN
+  文件：FluxEV/spot_pipe.py  第 332 行 _MOM()
+      sigma = 0.5*avg*(1 + avg^2/var)     # var 用 ddof=1
+  当 Nt==1 时样本方差不可估 -> var=NaN -> sigma=NaN -> extreme_quantile=NaN。
+  随后打分公式 score = clip((x-t0)/(z-t0), 0, 1) 遇到 z=NaN：
+      np.isfinite(z) 为假 -> 落到 else 分支 -> sc = 1.0
+  即：只要 ss_err 越过初始阈值，波动再小也判满分 1.0。
+  这就是"异常率虚高"的直接来源，且静默发生、不报错。
+
+  复现（100 个训练点里只有 1 个峰）：
+      Nt=1, t0=0.0, z=nan
+      x=0.001 -> score 1.000     <- 极微小波动也被判满分
+      x=0.500 -> score 1.000
+
+实测佐证（26 条清华候选轨迹，见 results/diagnose_sample.json）：
+  · 运动维度(速度/加速度/方向)全部失效(dims_ok==0)：24 / 26 条
+  · 静止点占比 中位 81.2%，异常率 中位 97.5%
+  · 26 条中 14 条"几乎全程在围栏内" -> 对住校学生，围栏判定本身无意义
+  · 异常点主导分项合计：dwell 64245 > geofence 3956 > smoke 225 > motion 67
+
+【4】修复内容（都在 geolife_pipeline.py）
+--------------------------------------------------------------------------------
+(1) fluxev_score 退化保护
+    · 拟合前剔除 NaN/inf，要求有限点 >= MIN_FIT_POINTS(=60)；
+    · initialize 后校验 extreme_quantile 有限且 Nt>1，否则判"拟合退化"；
+    · 退化时打标 init_failed=True，分数置 0 且不再跑流式更新（不伪造"正常"）；
+    · 上层用 motion_dims_ok 汇总，report 里显式告警，不再静默失效。
+    捕获异常类型：ZeroDivisionError / IndexError / ValueError。
+
+(2) 选段口径统一（scan_walking_trajectories）
+    新增静止点占比上限 MAX_STATIC_FRAC(=0.6)，超过则视为"驻留型记录"过滤掉，
+    只留真正的巡逻观测对象（行走型轨迹）。
+
+(3) 电子围栏改为"有厚度的警戒墙"（擦边不再立刻强报警）
+    · 新增 _dist_to_boundary_m：点到多边形各边最短距离(米，局部平面近似)
+    · 新增 geofence_score_polygon_graded：越入不足 GEOFENCE_RAMP_M(=30m) 时
+      分数 0~1 线性抬升(擦边轻告警)，深入 30m 以上才满分(实质越界)
+    · 同时保留二值版 geofence_binary 供真值/评估使用
+
+(4) eval 模式加长度校验
+    轨迹太短时给明确报错与建议(--max_files)，而不是 IndexError 崩溃。
+
+(5) 新增中间量导出
+    fluxev_score 现在返回 stages(pred_err/fs_err/fs_err_lm/ss_err)，
+    run_pipeline 汇总为 feat_stages，供平滑过程可视化使用。
+
+【5】验证
+--------------------------------------------------------------------------------
+· eval 模式回归（python geolife_pipeline.py --mode eval --max_files 400）：
+    AUROC = 0.776   AP = 0.740
+    @阈值0.5 -> Precision=0.896  Recall=0.558  F1=0.688
+    四类异常全部命中：逗留/抽烟 首报延迟 165s，聚集/围栏 0s
+· 真实模式（--mode real，选段口径修复后）：
+    选中行走轨迹，静止点占比 29.3%（修复前同类轨迹 95%+），异常率回落到合理区间
+· 清华小场景（run_tsinghua_small.py）：
+    轨迹 035/20090412205936.plt，903 点，75.2 min
+    围栏命中 306 点(33.9%)，跨越 0->1->0（进入 1910s、离开 3435s、区内 25.4 min）
+· BIGC 合成穿越（demo_geofence_bigc.py）：围栏命中 66 点，最终异常 62 点
+· 合成仿真（simulate.py）：徘徊/追逐/聚集三类事件全部命中，指标见 results/metrics.csv
+· 环境：Python 3.10.0 / numpy 2.2.6 / scipy 1.15.3 / pandas 2.2.3 / sklearn 1.7.2
+
+【6】方法学澄清：主流水线没有神经网络
+--------------------------------------------------------------------------------
+依赖清单（全部 import）：numpy / pandas / scipy / matplotlib / sklearn /
+                          json / os / sys / argparse / glob / datetime / math
+没有 torch / tensorflow / keras / jax，没有 nn.Module、反向传播、epoch、optimizer。
+
+易被误认成"训练"的两处：
+  · spot.fit(...)      —— 只是把校准段波动特征存进数组，不是梯度训练
+                          （FluxEV 的卖点就是无需训练）
+  · scipy.optimize.minimize —— 只求 GPD 似然方程的标量根(2~3 个参数)，属极值统计
+主链路 = 统计学(EVT/SPOT/GPD) + 规则引擎(计时/几何)，可解释、无参数学习。
+（另有一个独立的 torch 分支 tcn_dl_branch/，见【9】，不参与本链路。）
+
+【7】文件清单（写清楚每个文件做什么）
+--------------------------------------------------------------------------------
+A. 主流水线
+  geolife_pipeline.py    核心。Geolife 解析 -> 特征 -> FluxEV 连续分数 -> 行为规则
+                         -> 融合 -> 评估 -> 出图/CSV。
+                         含 point_in_polygon / load_geofence_polygon /
+                         geofence_score_polygon / geofence_score_polygon_graded /
+                         _dist_to_boundary_m / fluxev_score / run_pipeline /
+                         plot_pipeline / main 等。
+                         用法：python geolife_pipeline.py --mode {eval|real}
+                                 [--data DIR] [--geofence GEOJSON] [--dt 5] [--q 0.005]
+                                 [--max_files 400] [--threshold 0.5]
+  simulate.py            纯合成仿真（不依赖 Geolife）。构造 徘徊/追逐/聚集 三类事件，
+                         输出 results/simulation.png 与 results/metrics.csv。
+                         用法：python simulate.py [--n 2400] [--dt 0.5] [--seed 1]
+  FluxEV/                参考实现（WSDM 2021）。本链路只用其中两个文件：
+      spot_pipe.py       SPOT 流式阈值（Peaks-Over-Threshold + GPD + MOM 估计）★被改
+      eval_methods.py    adjust_predicts（异常区间对齐，AIOps 口径）
+      main.py / preprocessing.py / utils.py   上游原版，未被本链路调用
+      readme.md          原始说明
+
+B. 电子围栏数据（GeoJSON Polygon，[lon,lat] 顺序）
+  geofence_bigc.json     北京印刷学院校区（OSM way 50636364）
+  geofence_tsinghua.json 清华大学主校区（OSM relation 7469216，87 点闭合环）
+
+C. 演示 / 可视化脚本
+  demo_geofence_bigc.py  合成一条东西向穿越北京印刷学院的轨迹 -> 围栏检测 + 出图
+                         -> results/geofence_bigc_demo.png
+  run_tsinghua_small.py  在全量数据里找"部分进校(15%~85%)且走路"的真实轨迹 ->
+                         多边形围栏跨越演示 -> results/geofence_tsinghua_small.png
+  visualize_smoothing.py ①禁区"网格警戒墙"图 -> results/zone_gridwall.png
+                         ②FluxEV 一阶/二阶平滑逐层分解(速度/加速度/方向)
+                         -> results/smooth_stages_{speed,accel,turn}.png
+  make_nature_figs.py    Nature 风格图表集（6 张）-> results/nature/
+
+D. 诊断脚本
+  diagnose_sample.py     小样本诊断：跑前 40 条清华候选，统计 静止占比/进校占比/
+                         异常率/主导分项/有效维度 -> results/diagnose_sample.json
+  diagnose_stationary.py 同上的规模化版本，规模由环境变量 LIMIT 控制（默认 80，全量很慢）
+
+E. 数据获取（临时脚本，可留档）
+  _fetch_geofence.py     从 OSM 多镜像拉取北京印刷学院边界 -> geofence_bigc.json
+  _fetch_tsinghua.py     拉取清华大学 relation -> 组装 outer way
+  _fetch_tsinghua2.py    清华边界的二次抓取/修整
+  _scan_inside_bigc.py   精确扫描：对 18670 个文件做 point-in-polygon，统计进入校区者
+
+F. 原始数据与资料
+  Geolife Trajectories 1.3/   数据集本体（Data/ 下 182 个用户目录，共 18670 个 .plt）
+  Geolife_Trajectories_1.3.zip 原始压缩包
+  交(1).doc                    四类异常的判定标准来源
+  发明说明书-多视角地形场景联合分类(1).docx
+  研究方向.txt                 研究方向的英文提纲（Core Problem / Approach / Merits）
+  工作记录.md                  上一阶段的对话与思考记录
+  results.zip                  历史结果打包
+
+G. 输出
+  results/                     见【8】
+  results/nature/              Nature 风格图表，见【8】
+  logs/                        运行日志（geolife_real_bigc.log 等）
+
+【8】图表清单（全部英文标注）
+--------------------------------------------------------------------------------
+通用图（results/）：
+  simulation.png              合成仿真总览（轨迹 + 各维度分数 + 真值/预测）
+  geolife_eval.png            eval 模式六联图（轨迹/速度/运动分数/行为分数/最终/二值）
+  geolife_curves.png          eval 的 PR 曲线 + ROC 曲线
+  geolife_real.png            real 模式五联图
+  zone_gridwall.png           禁区以"网格警戒墙"呈现（斜线网格 + 加粗边界 +
+                              内侧警戒带），越过墙体才判越界
+  smooth_stages_speed.png     FluxEV 速度维度逐层：原始 / EWMA预测误差 / 一阶平滑 /
+  smooth_stages_accel.png     局部极大 / 二阶平滑（右侧轴叠加连续异常分数），
+  smooth_stages_turn.png      标出 train|test 分界（加速度、方向维度同上）
+  geofence_bigc_demo.png      北京印刷学院合成穿越（左地图 + 右分数）
+  geofence_tsinghua_small.png 清华真实轨迹跨越（0->1->0）
+
+Nature 风格（results/nature/，350 dpi，单栏 89mm / 双栏 183mm，面板字母 a/b/c，
+无顶右脊线，Arial，低饱和配色）：
+  fig1_roc_pr.png              ROC(AUROC=0.776) + PR(AP=0.740)   [测试段口径]
+  fig2_score_decomposition.png 四类行为分项 + 真值/最终分数/运动分数分解
+  fig3_stationary_inflation.png 静止占比 vs 异常率散点（颜色 = 有效维度数）
+  fig4_smoothing_stages.png    FluxEV 逐层平滑（真实清华轨迹，标 train|test）
+  fig5_geofence_mesh.png       网格警戒墙地图视图（围栏内外分色）
+  fig6_latency_summary.png     四类行为首报延迟（抽烟/逗留 165s，聚集/围栏 0s）
+
+配色（鲜艳）：告警 #E8272C / 运动 #0B6BFF / 抽烟 #FF7A00 / 聚集 #00B140 /
+              方向 #8A2BE2 / 真值橙 #FF7A00。
+
+【9】并行的 TCN 深度学习分支（不参与主链路，需明确论文定位）
+--------------------------------------------------------------------------------
+位置：tcn_dl_branch/tcn_branch.py（torch 实现，独立目录，有自己的 results/）
+定位：与 FluxEV 并列的第二个异常打分器。输入是行人 2D 轨迹时序(x,y)，不是图像；
+      用轨迹预测/重构做自监督——只喂正常轨迹学"正常人怎么走"，
+      推理时用预测误差 ADE 映射成 S_dl ∈ [0,1]。
+核心 API：predict(model, x_obs) 与 tcn_frame_scores(model, x, y, ...)
+产物：tcn_checkpoint.pt / tcn_error_stats.json / tcn_train.png / tcn_fluxev_fusion.png
+注意：它需要训练（epoch/optimizer/反向传播），与本项目"无需训练、边缘可部署"的
+      主定位取向不同。建议在论文里二选一，或明确表述为"对照方案"。
+
+
+【10】Tsinghua 诊断数据（26 条样例，供引用）
+--------------------------------------------------------------------------------
+tag                  点数   中位v  静止%   进校%   异常率%  dims  主导 m/d/s/g
+000/200903310039     7382   0.00   99.0    0.0    95.7    0   0/7010/55/0
+000/200904020607     6864   0.00   97.7  100.0   100.0    0   0/6624/1/239
+000/200904030116    26576   0.00   97.4    0.4    97.0    0   0/25655/16/119
+000/200903300052     3551   0.00   95.8  100.0   100.0    0   0/3277/1/273
+000/200811150101     2260   0.00   95.0  100.0   100.0    0   0/2084/1/174
+000/200811130346     3038   0.00   94.4    0.0    92.8    0   0/2803/16/0
+000/200904010506     3031   0.00   93.4  100.0   100.0    0   0/2711/1/319
+000/200811140152     1541   0.00   91.4  100.0   100.0    0   0/1345/1/195
+000/200811141014      833   0.00   89.8   98.8    98.8    0   0/647/1/175
+000/200810240209      235   0.00   85.5  100.0   100.0    0   0/85/1/149
+000/200904060237      911   7.26   35.0    0.0    27.7    3   15/221/16/0
+000/200811110017     1345   0.85   29.2    0.0    17.2    3   52/163/16/0
+000/200812031512      248   2.01   15.7   98.0    98.0    0   0/0/0/243
+000/200811171552      304   1.09    9.5  100.0   100.0    0   0/0/0/304
+（其余略；完整数据见 results/diagnose_sample.json）
+
+规律很清楚：
+  中位速度为 0 的轨迹（纯驻留）-> 运动维度全失效 -> dwell 淹没整条轨迹
+  -> 异常率 ~95-100%（这是修复前的假象）；
+  中位速度正常(0.85~7.26)的行走轨迹 -> 运动维度有效 -> 异常率回落到 17~28%，
+  恢复区分度。这正是"静止型轨迹异常率虚高"的量化证据。
+
+================================================================================

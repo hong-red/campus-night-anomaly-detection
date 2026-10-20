@@ -1,0 +1,30 @@
+{
+  "Loitering": {
+    "auroc_method1": 0.497,
+    "auroc_method2": 0.672,
+    "ap_method1": 0.361,
+    "ap_method2": 0.496,
+    "n": 120
+  },
+  "Sprinting": {
+    "auroc_method1": 0.507,
+    "auroc_method2": 0.786,
+    "ap_method1": 0.363,
+    "ap_method2": 0.621,
+    "n": 120
+  },
+  "Zigzag": {
+    "auroc_method1": 0.5,
+    "auroc_method2": 0.614,
+    "ap_method1": 0.359,
+    "ap_method2": 0.438,
+    "n": 120
+  },
+  "Sudden stop": {
+    "auroc_method1": 0.618,
+    "auroc_method2": 0.368,
+    "ap_method1": 0.47,
+    "ap_method2": 0.413,
+    "n": 120
+  }
+}

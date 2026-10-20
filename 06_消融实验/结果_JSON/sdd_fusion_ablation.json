@@ -1,0 +1,58 @@
+{
+  "dwell": {
+    "rules": 0.757,
+    "dl": 0.491,
+    "fused": 0.731,
+    "fluxev": 0.757,
+    "naive": 0.731,
+    "gated": 0.736
+  },
+  "geofence": {
+    "rules": 1.0,
+    "dl": 0.543,
+    "fused": 0.987,
+    "fluxev": 1.0,
+    "naive": 0.987,
+    "gated": 0.987
+  },
+  "gather": {
+    "rules": 0.886,
+    "dl": 0.63,
+    "fused": 0.882,
+    "fluxev": 0.886,
+    "naive": 0.882,
+    "gated": 0.882
+  },
+  "wandering": {
+    "rules": 0.491,
+    "dl": 0.809,
+    "fused": 0.802,
+    "fluxev": 0.491,
+    "naive": 0.802,
+    "gated": 0.632
+  },
+  "sprint": {
+    "rules": 0.495,
+    "dl": 0.834,
+    "fused": 0.829,
+    "fluxev": 0.495,
+    "naive": 0.829,
+    "gated": 0.666
+  },
+  "zigzag": {
+    "rules": 0.491,
+    "dl": 0.84,
+    "fused": 0.833,
+    "fluxev": 0.491,
+    "naive": 0.833,
+    "gated": 0.532
+  },
+  "sudden-stop": {
+    "rules": 0.738,
+    "dl": 0.503,
+    "fused": 0.703,
+    "fluxev": 0.738,
+    "naive": 0.703,
+    "gated": 0.715
+  }
+}

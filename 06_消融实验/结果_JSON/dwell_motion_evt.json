@@ -1,0 +1,9 @@
+{
+  "dwell_rule": 0.8308,
+  "motion": 0.4373,
+  "max_rule_motion": 0.7713,
+  "n_test_traj": 65,
+  "dwell_rule_acc_at_0_5": 0.7777,
+  "motion_acc_at_0_5": 0.5746,
+  "max_rule_motion_acc_at_0_5": 0.7335
+}

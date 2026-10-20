@@ -1,0 +1,19 @@
+\begin{table}[htbp]
+\caption{Literature comparison: AUROC across six real-trajectory events, all on the same Geolife walking trajectories. Ours uses the responsible branch per event (hard rules with a 15-s dwell ramp for the rule domain, TCN for the motion domain), following the division of labour in Table~\ref{tab:ablation}. All events are scored frame-wise except wandering, which is scored at window level (the TCN's natural granularity, consistent with Table~6). Best per row in bold.}
+\begin{center}
+\begin{tabular}{lcccc}
+\hline
+\textbf{Event} & \textbf{Ours} & \textbf{IJGI\cite{ijgi}} & \textbf{Appl.Sci.\cite{applsci}} & \textbf{SPOT\cite{spot}} \\
+\hline
+Dwell ($>$5 min) & \textbf{0.974} & 0.796 & 0.947 & 0.952 \\
+Geofence intrusion & \textbf{1.000} & 0.913 & 0.583 & 0.518 \\
+Off-hours gathering & \textbf{0.937} & 0.857 & 0.491 & 0.502 \\
+Wandering (window-level) & \textbf{0.774} & 0.713 & 0.693 & 0.516 \\
+Sprinting & \textbf{0.729} & 0.437 & 0.462 & 0.624 \\
+Zigzag & \textbf{0.547} & 0.506 & 0.489 & 0.479 \\
+\hline
+Coverage & 5/6 & 4/6 & 3/6 & 2/6 \\
+\hline
+\end{tabular}
+\end{center}
+\end{table}

@@ -1,0 +1,29 @@
+{
+  "geofence": {
+    "label": "Intrusion",
+    "acc": 0.7747,
+    "auroc": 0.4968,
+    "neg_frac": 0.7974,
+    "tp": 110,
+    "fp": 488,
+    "fn": 3266
+  },
+  "gather": {
+    "label": "Gathering",
+    "acc": 0.6139,
+    "auroc": 0.4892,
+    "neg_frac": 0.6309,
+    "tp": 157,
+    "fp": 441,
+    "fn": 5993
+  },
+  "dwell": {
+    "label": "Lingering",
+    "acc": 0.5209,
+    "auroc": 0.4478,
+    "neg_frac": 0.5582,
+    "tp": 16,
+    "fp": 637,
+    "fn": 7346
+  }
+}

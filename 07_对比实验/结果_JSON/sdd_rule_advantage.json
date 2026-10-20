@@ -1,0 +1,25 @@
+{
+  "geofence_intrusion": {
+    "rule": {
+      "accuracy": 1.0,
+      "auroc": 1.0
+    },
+    "motion_fluxev": {
+      "auroc": 0.5
+    },
+    "n_crossing_tracks": 68
+  },
+  "multi_person_gathering": {
+    "rule": {
+      "precision": 0.8446,
+      "recall": 1.0,
+      "f1": 0.9158,
+      "accuracy": 0.9457,
+      "rule_auc": 0.9698
+    },
+    "motion_fluxev": {
+      "auroc": 0.5
+    },
+    "n_tracks": 28
+  }
+}

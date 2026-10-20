@@ -1,0 +1,13 @@
+\section{Research Direction}
+
+\subsection{Core Problem}
+
+In campus nighttime security scenarios, real-time detection of anomalous behaviors—such as loitering in restricted areas, late-night gatherings, and sudden chases—faces two major bottlenecks: (i) existing deep learning methods are computationally intensive and heavily reliant on labeled data, making them impractical for edge deployment; (ii) conventional surveillance systems are limited to post-event forensic analysis and lack proactive alerting capabilities.
+
+\subsection{Core Approach}
+
+We conceptualize the unmanned patrol vehicle as a mobile "data collector" that transforms sensed pedestrian trajectories (positions, velocities, dwell times, etc.) into multi-dimensional spatio-temporal time-series data. Building upon this, we propose a lightweight unsupervised anomaly detection framework grounded in Extreme Value Theory (EVT). Specifically, drawing inspiration from the FluxEV framework published at WSDM 2021, we model trajectories as multi-dimensional feature sequences—including velocity, acceleration, and rate of direction change—and leverage its fluctuation extraction and two-step smoothing mechanisms to convert "non-extreme anomalies" into extreme values, coupled with Method of Moments (MOM)-based automatic thresholding to achieve high-precision real-time detection.
+
+\subsection{Methodological Advantages}
+
+Our approach requires no training, offers high computational efficiency and strong interpretability, and is inherently suited for edge devices such as the RV1126—perfectly aligning with the project's requirement for "sub-second edge-side alerting."

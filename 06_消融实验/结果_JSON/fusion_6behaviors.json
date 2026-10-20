@@ -1,0 +1,152 @@
+{
+  "geofence": {
+    "label": "Intrusion",
+    "domain": "rule",
+    "hard": {
+      "acc": 1.0,
+      "prec": 1.0,
+      "rec": 1.0,
+      "f1": 1.0,
+      "auroc": 1.0
+    },
+    "soft": {
+      "acc": 0.7782,
+      "prec": 0.1887,
+      "rec": 0.0287,
+      "f1": 0.0499,
+      "auroc": 0.4879
+    },
+    "fused": {
+      "acc": 0.975,
+      "prec": 0.8901,
+      "rec": 1.0,
+      "f1": 0.9418,
+      "auroc": 0.9946
+    }
+  },
+  "gather": {
+    "label": "Gathering",
+    "domain": "rule",
+    "hard": {
+      "acc": 0.9085,
+      "prec": 0.8013,
+      "rec": 1.0,
+      "f1": 0.8897,
+      "auroc": 0.9367
+    },
+    "soft": {
+      "acc": 0.6218,
+      "prec": 0.3521,
+      "rec": 0.0294,
+      "f1": 0.0543,
+      "auroc": 0.5024
+    },
+    "fused": {
+      "acc": 0.8907,
+      "prec": 0.7715,
+      "rec": 1.0,
+      "f1": 0.871,
+      "auroc": 0.9311
+    }
+  },
+  "dwell": {
+    "label": "Lingering",
+    "domain": "rule",
+    "hard": {
+      "acc": 0.7424,
+      "prec": 1.0,
+      "rec": 0.417,
+      "f1": 0.5886,
+      "auroc": 0.831
+    },
+    "soft": {
+      "acc": 0.536,
+      "prec": 0.3005,
+      "rec": 0.0378,
+      "f1": 0.0671,
+      "auroc": 0.3739
+    },
+    "fused": {
+      "acc": 0.7038,
+      "prec": 0.8261,
+      "rec": 0.4175,
+      "f1": 0.5547,
+      "auroc": 0.7333
+    }
+  },
+  "wandering": {
+    "label": "Wandering",
+    "domain": "motion",
+    "hard": {
+      "acc": 0.6416,
+      "prec": 0.0,
+      "rec": 0.0,
+      "f1": 0.0,
+      "auroc": null
+    },
+    "soft": {
+      "acc": 0.6196,
+      "prec": 0.3497,
+      "rec": 0.0715,
+      "f1": 0.1187,
+      "auroc": 0.7014
+    },
+    "fused": {
+      "acc": 0.6196,
+      "prec": 0.3497,
+      "rec": 0.0715,
+      "f1": 0.1187,
+      "auroc": 0.7014
+    }
+  },
+  "sprint": {
+    "label": "Sprint",
+    "domain": "motion",
+    "hard": {
+      "acc": 0.6416,
+      "prec": 0.0,
+      "rec": 0.0,
+      "f1": 0.0,
+      "auroc": null
+    },
+    "soft": {
+      "acc": 0.6814,
+      "prec": 0.6473,
+      "rec": 0.2443,
+      "f1": 0.3547,
+      "auroc": 0.7291
+    },
+    "fused": {
+      "acc": 0.6814,
+      "prec": 0.6473,
+      "rec": 0.2443,
+      "f1": 0.3547,
+      "auroc": 0.7291
+    }
+  },
+  "zigzag": {
+    "label": "Zigzag",
+    "domain": "motion",
+    "hard": {
+      "acc": 0.6416,
+      "prec": 0.0,
+      "rec": 0.0,
+      "f1": 0.0,
+      "auroc": null
+    },
+    "soft": {
+      "acc": 0.6296,
+      "prec": 0.3161,
+      "rec": 0.0286,
+      "f1": 0.0525,
+      "auroc": 0.5474
+    },
+    "fused": {
+      "acc": 0.6296,
+      "prec": 0.3161,
+      "rec": 0.0286,
+      "f1": 0.0525,
+      "auroc": 0.5474
+    }
+  }
+}

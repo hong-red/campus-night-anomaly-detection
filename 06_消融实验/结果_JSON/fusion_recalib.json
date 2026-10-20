@@ -1,0 +1,44 @@
+{
+  "sigmoid=2": {
+    "Loitering": 0.657,
+    "Sprinting": 0.78,
+    "Zigzag": 0.589,
+    "Sudden stop": 0.326
+  },
+  "sigmoid=1": {
+    "Loitering": 0.66,
+    "Sprinting": 0.782,
+    "Zigzag": 0.589,
+    "Sudden stop": 0.292
+  },
+  "sigmoid=0": {
+    "Loitering": 0.661,
+    "Sprinting": 0.783,
+    "Zigzag": 0.59,
+    "Sudden stop": 0.253
+  },
+  "zclip=2": {
+    "Loitering": 0.641,
+    "Sprinting": 0.772,
+    "Zigzag": 0.555,
+    "Sudden stop": 0.485
+  },
+  "zclip=3": {
+    "Loitering": 0.64,
+    "Sprinting": 0.772,
+    "Zigzag": 0.554,
+    "Sudden stop": 0.492
+  },
+  "zclip=4": {
+    "Loitering": 0.64,
+    "Sprinting": 0.771,
+    "Zigzag": 0.554,
+    "Sudden stop": 0.496
+  },
+  "rank": {
+    "Loitering": 0.662,
+    "Sprinting": 0.783,
+    "Zigzag": 0.591,
+    "Sudden stop": 0.239
+  }
+}

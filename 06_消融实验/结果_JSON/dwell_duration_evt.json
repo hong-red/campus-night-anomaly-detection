@@ -1,0 +1,13 @@
+{
+  "n_normal_traj": 122,
+  "n_stay_episodes": 1185,
+  "learned_init_threshold_s": 152.0,
+  "learned_extreme_quantile_s": 901.1,
+  "hard_threshold_s": [
+    120,
+    300
+  ],
+  "dwell_hard_auroc_mean": 0.7602,
+  "dwell_evt_auroc_mean": 0.7181,
+  "n_test_traj": 64
+}
