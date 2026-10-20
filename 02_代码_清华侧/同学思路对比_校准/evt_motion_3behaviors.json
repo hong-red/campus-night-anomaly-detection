@@ -1,0 +1,29 @@
+{
+  "wandering": {
+    "label": "Wandering",
+    "acc": 0.6293,
+    "auroc": 0.4954,
+    "neg_frac": 0.6416,
+    "tp": 381,
+    "fp": 585,
+    "fn": 5591
+  },
+  "sprint": {
+    "label": "Sprint",
+    "acc": 0.6322,
+    "auroc": 0.5105,
+    "neg_frac": 0.6416,
+    "tp": 403,
+    "fp": 559,
+    "fn": 5569
+  },
+  "zigzag": {
+    "label": "Zigzag",
+    "acc": 0.6236,
+    "auroc": 0.4911,
+    "neg_frac": 0.6416,
+    "tp": 170,
+    "fp": 470,
+    "fn": 5802
+  }
+}

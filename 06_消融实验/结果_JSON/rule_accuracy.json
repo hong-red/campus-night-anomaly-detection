@@ -1,0 +1,98 @@
+{
+  "per_event": {
+    "dwell": {
+      "specific_rule": {
+        "acc": 0.9685,
+        "prec": 1.0,
+        "rec": 0.4167,
+        "f1": 0.5882,
+        "tp": 75,
+        "fp": 0,
+        "fn": 105,
+        "tn": 3150,
+        "auroc": 0.8306,
+        "ap": 0.6794
+      },
+      "full_system": {
+        "acc": 0.7967,
+        "prec": 0.1194,
+        "rec": 0.4333,
+        "f1": 0.1873,
+        "tp": 78,
+        "fp": 575,
+        "fn": 102,
+        "tn": 2575,
+        "auroc": 0.6785,
+        "ap": 0.0844
+      }
+    },
+    "geofence": {
+      "specific_rule": {
+        "acc": 1.0,
+        "prec": 1.0,
+        "rec": 1.0,
+        "f1": 1.0,
+        "tp": 58,
+        "fp": 0,
+        "fn": 0,
+        "tn": 3272,
+        "auroc": 1.0,
+        "ap": 1.0
+      },
+      "full_system": {
+        "acc": 0.8213,
+        "prec": 0.0888,
+        "rec": 1.0,
+        "f1": 0.1632,
+        "tp": 58,
+        "fp": 595,
+        "fn": 0,
+        "tn": 2677,
+        "auroc": 0.9344,
+        "ap": 0.1191
+      }
+    },
+    "gather": {
+      "specific_rule": {
+        "acc": 0.9925,
+        "prec": 0.8571,
+        "rec": 1.0,
+        "f1": 0.9231,
+        "tp": 150,
+        "fp": 25,
+        "fn": 0,
+        "tn": 3155,
+        "auroc": 0.9962,
+        "ap": 0.8621
+      },
+      "full_system": {
+        "acc": 0.8489,
+        "prec": 0.2297,
+        "rec": 1.0,
+        "f1": 0.3736,
+        "tp": 150,
+        "fp": 503,
+        "fn": 0,
+        "tn": 2677,
+        "auroc": 0.947,
+        "ap": 0.308
+      }
+    }
+  },
+  "overall_union": {
+    "full_system": {
+      "acc": 0.8592,
+      "prec": 0.438,
+      "rec": 0.7371,
+      "f1": 0.5495,
+      "tp": 286,
+      "fp": 367,
+      "fn": 102,
+      "tn": 2575,
+      "auroc": 0.8477,
+      "ap": 0.4217
+    }
+  },
+  "specific_rule_avg_acc": 0.987,
+  "note": "per_event[kind].specific_rule 用该事件自己的规则分数；full_system 用 max(FluxEV, TCN) 在单事件上是一对多口径，会把其它事件的报警计入该事件 FP，仅作参考；overall_union 是完整系统对并集。"
+}

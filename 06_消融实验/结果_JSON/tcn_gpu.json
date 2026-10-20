@@ -1,0 +1,8 @@
+{
+  "geofence":   {"label": "Intrusion", "acc": 0.862, "prec": 0.030, "rec": 0.023, "f1": 0.026, "auroc": 0.463},
+  "gather":     {"label": "Gathering", "acc": 0.812, "prec": 0.231, "rec": 0.092, "f1": 0.132, "auroc": 0.610},
+  "dwell":      {"label": "Lingering", "acc": 0.766, "prec": 0.078, "rec": 0.033, "f1": 0.046, "auroc": 0.147},
+  "wandering":  {"label": "Wandering", "acc": 0.769, "prec": 0.233, "rec": 0.106, "f1": 0.145, "auroc": 0.567},
+  "sprint":     {"label": "Sprint",    "acc": 0.836, "prec": 0.570, "rec": 0.470, "f1": 0.515, "auroc": 0.770},
+  "zigzag":     {"label": "Zigzag",    "acc": 0.787, "prec": 0.280, "rec": 0.093, "f1": 0.140, "auroc": 0.648}
+}

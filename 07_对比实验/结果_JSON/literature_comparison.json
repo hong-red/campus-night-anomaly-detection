@@ -1,0 +1,17 @@
+{
+  "order": ["dwell", "geofence", "gather", "wandering", "sprint", "zigzag"],
+  "matrix": {
+    "dwell":     {"ours_dual": 0.974, "ours_branch": "rules(lo=15)", "ijgi": 0.796, "applsci": 0.947, "spot": 0.952},
+    "geofence":  {"ours_dual": 1.000, "ours_branch": "rules(lo=15)", "ijgi": 0.913, "applsci": 0.583, "spot": 0.518},
+    "gather":    {"ours_dual": 0.937, "ours_branch": "rules(lo=15)", "ijgi": 0.857, "applsci": 0.491, "spot": 0.502},
+    "wandering": {"ours_dual": 0.774, "ours_branch": "TCN(window)", "ijgi": 0.713, "applsci": 0.693, "spot": 0.516},
+    "sprint":    {"ours_dual": 0.729, "ours_branch": "TCN(frame)", "ijgi": 0.437, "applsci": 0.462, "spot": 0.624},
+    "zigzag":    {"ours_dual": 0.547, "ours_branch": "TCN(frame)", "ijgi": 0.506, "applsci": 0.489, "spot": 0.479}
+  },
+  "summary": {
+    "ours_dual": {"coverage": "5/6", "n_covered": 5},
+    "ijgi":      {"coverage": "4/6", "n_covered": 4},
+    "applsci":   {"coverage": "3/6", "n_covered": 3},
+    "spot":      {"coverage": "2/6", "n_covered": 2}
+  }
+}

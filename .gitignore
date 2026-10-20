@@ -1,0 +1,19 @@
+# --- 数据集（体量过大，不入库；获取方法见 04_数据集/README_数据获取.md）---
+04_数据集/Geolife/
+04_数据集/StanfordDrone/
+
+# --- 生成物（脚本运行后重新生成）---
+results/
+**/results/
+__pycache__/
+*.pyc
+*.pyo
+
+# --- 复现过程临时文件 ---
+_复现日志/
+
+# --- 系统 / 编辑器 ---
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

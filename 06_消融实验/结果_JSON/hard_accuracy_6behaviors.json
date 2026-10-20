@@ -1,0 +1,62 @@
+{
+  "geofence": {
+    "label": "Intrusion",
+    "domain": "rule",
+    "acc": 1.0,
+    "auroc": 1.0,
+    "neg_frac": 0.8905,
+    "tp": 3648,
+    "fp": 0,
+    "fn": 0
+  },
+  "gather": {
+    "label": "Gathering",
+    "domain": "rule",
+    "acc": 0.9542,
+    "auroc": 0.9755,
+    "neg_frac": 0.8154,
+    "tp": 6150,
+    "fp": 1525,
+    "fn": 0
+  },
+  "dwell": {
+    "label": "Lingering",
+    "domain": "rule",
+    "acc": 0.9031,
+    "auroc": 0.9749,
+    "neg_frac": 0.779,
+    "tp": 4136,
+    "fp": 0,
+    "fn": 3226
+  },
+  "wandering": {
+    "label": "Wandering",
+    "domain": "motion",
+    "acc": 0.8207,
+    "auroc": 0.4805,
+    "neg_frac": 0.8207,
+    "tp": 0,
+    "fp": 0,
+    "fn": 5972
+  },
+  "sprint": {
+    "label": "Sprint",
+    "domain": "motion",
+    "acc": 0.8207,
+    "auroc": 0.488,
+    "neg_frac": 0.8207,
+    "tp": 0,
+    "fp": 0,
+    "fn": 5972
+  },
+  "zigzag": {
+    "label": "Zigzag",
+    "domain": "motion",
+    "acc": 0.8207,
+    "auroc": 0.4805,
+    "neg_frac": 0.8207,
+    "tp": 0,
+    "fp": 0,
+    "fn": 5972
+  }
+}

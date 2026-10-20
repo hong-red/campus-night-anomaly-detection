@@ -1,0 +1,22 @@
+{
+  "徘徊": {
+    "auroc": 0.767,
+    "ade_anomaly": 16.39,
+    "ade_normal": 6.48
+  },
+  "急停": {
+    "auroc": 0.17,
+    "ade_anomaly": 6.88,
+    "ade_normal": 6.99
+  },
+  "蛇形": {
+    "auroc": 0.644,
+    "ade_anomaly": 7.29,
+    "ade_normal": 5.98
+  },
+  "疾跑": {
+    "auroc": 0.8,
+    "ade_anomaly": 23.81,
+    "ade_normal": 7.4
+  }
+}

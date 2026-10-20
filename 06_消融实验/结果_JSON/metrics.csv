@@ -1,0 +1,2 @@
+dim,precision,recall,f1,event_hit,latency_s
+gather(rule),0.8743,1.0,0.9329,True,0.0

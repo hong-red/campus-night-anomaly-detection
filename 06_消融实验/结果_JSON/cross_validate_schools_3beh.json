@@ -1,0 +1,20 @@
+{
+  "wandering": {
+    "geo_geo": 0.908,
+    "geo_sdd": 0.795,
+    "sdd_sdd": 0.801,
+    "sdd_geo": 0.871
+  },
+  "sprint": {
+    "geo_geo": 0.799,
+    "geo_sdd": 0.646,
+    "sdd_sdd": 0.662,
+    "sdd_geo": 0.813
+  },
+  "zigzag": {
+    "geo_geo": 0.802,
+    "geo_sdd": 0.716,
+    "sdd_sdd": 0.744,
+    "sdd_geo": 0.788
+  }
+}

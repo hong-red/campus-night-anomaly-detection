@@ -1,0 +1,218 @@
+{
+  "max (baseline)": {
+    "Loitering": {
+      "auroc": 0.672,
+      "ap": 0.496
+    },
+    "Sprinting": {
+      "auroc": 0.786,
+      "ap": 0.621
+    },
+    "Zigzag": {
+      "auroc": 0.614,
+      "ap": 0.438
+    },
+    "Sudden stop": {
+      "auroc": 0.368,
+      "ap": 0.413
+    }
+  },
+  "S_dl>=0.5": {
+    "Loitering": {
+      "auroc": 0.507,
+      "ap": 0.38
+    },
+    "Sprinting": {
+      "auroc": 0.616,
+      "ap": 0.462
+    },
+    "Zigzag": {
+      "auroc": 0.496,
+      "ap": 0.362
+    },
+    "Sudden stop": {
+      "auroc": 0.616,
+      "ap": 0.459
+    }
+  },
+  "S_dl>=0.7": {
+    "Loitering": {
+      "auroc": 0.508,
+      "ap": 0.378
+    },
+    "Sprinting": {
+      "auroc": 0.585,
+      "ap": 0.431
+    },
+    "Zigzag": {
+      "auroc": 0.497,
+      "ap": 0.361
+    },
+    "Sudden stop": {
+      "auroc": 0.622,
+      "ap": 0.463
+    }
+  },
+  "S_dl>=0.85": {
+    "Loitering": {
+      "auroc": 0.508,
+      "ap": 0.376
+    },
+    "Sprinting": {
+      "auroc": 0.564,
+      "ap": 0.411
+    },
+    "Zigzag": {
+      "auroc": 0.497,
+      "ap": 0.36
+    },
+    "Sudden stop": {
+      "auroc": 0.624,
+      "ap": 0.465
+    }
+  },
+  "smooth5": {
+    "Loitering": {
+      "auroc": 0.708,
+      "ap": 0.506
+    },
+    "Sprinting": {
+      "auroc": 0.796,
+      "ap": 0.608
+    },
+    "Zigzag": {
+      "auroc": 0.617,
+      "ap": 0.446
+    },
+    "Sudden stop": {
+      "auroc": 0.351,
+      "ap": 0.383
+    }
+  },
+  "smooth9": {
+    "Loitering": {
+      "auroc": 0.709,
+      "ap": 0.508
+    },
+    "Sprinting": {
+      "auroc": 0.787,
+      "ap": 0.579
+    },
+    "Zigzag": {
+      "auroc": 0.613,
+      "ap": 0.447
+    },
+    "Sudden stop": {
+      "auroc": 0.335,
+      "ap": 0.361
+    }
+  },
+  "smooth5+S_dl>=0.7": {
+    "Loitering": {
+      "auroc": 0.506,
+      "ap": 0.374
+    },
+    "Sprinting": {
+      "auroc": 0.551,
+      "ap": 0.398
+    },
+    "Zigzag": {
+      "auroc": 0.498,
+      "ap": 0.359
+    },
+    "Sudden stop": {
+      "auroc": 0.61,
+      "ap": 0.45
+    }
+  },
+  "speed>=0.5": {
+    "Loitering": {
+      "auroc": 0.533,
+      "ap": 0.418
+    },
+    "Sprinting": {
+      "auroc": 0.788,
+      "ap": 0.626
+    },
+    "Zigzag": {
+      "auroc": 0.614,
+      "ap": 0.439
+    },
+    "Sudden stop": {
+      "auroc": 0.298,
+      "ap": 0.41
+    }
+  },
+  "dwell-gate": {
+    "Loitering": {
+      "auroc": 0.672,
+      "ap": 0.496
+    },
+    "Sprinting": {
+      "auroc": 0.786,
+      "ap": 0.621
+    },
+    "Zigzag": {
+      "auroc": 0.614,
+      "ap": 0.438
+    },
+    "Sudden stop": {
+      "auroc": 0.367,
+      "ap": 0.413
+    }
+  },
+  "spd0.5+S_dl>=0.7": {
+    "Loitering": {
+      "auroc": 0.502,
+      "ap": 0.375
+    },
+    "Sprinting": {
+      "auroc": 0.584,
+      "ap": 0.431
+    },
+    "Zigzag": {
+      "auroc": 0.497,
+      "ap": 0.361
+    },
+    "Sudden stop": {
+      "auroc": 0.602,
+      "ap": 0.449
+    }
+  },
+  "spd0.5+s5+S_dl>=0.7": {
+    "Loitering": {
+      "auroc": 0.504,
+      "ap": 0.373
+    },
+    "Sprinting": {
+      "auroc": 0.552,
+      "ap": 0.399
+    },
+    "Zigzag": {
+      "auroc": 0.498,
+      "ap": 0.359
+    },
+    "Sudden stop": {
+      "auroc": 0.601,
+      "ap": 0.449
+    }
+  },
+  "dwell-gate+S_dl>=0.7": {
+    "Loitering": {
+      "auroc": 0.508,
+      "ap": 0.378
+    },
+    "Sprinting": {
+      "auroc": 0.585,
+      "ap": 0.431
+    },
+    "Zigzag": {
+      "auroc": 0.497,
+      "ap": 0.361
+    },
+    "Sudden stop": {
+      "auroc": 0.622,
+      "ap": 0.462
+    }
+  }
+}
