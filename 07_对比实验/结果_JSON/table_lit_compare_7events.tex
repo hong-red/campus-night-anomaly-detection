@@ -1,0 +1,20 @@
+\begin{table}[t]
+\centering
+\caption{Frame-level AUROC across seven events on 50 Geolife walking trajectories with identical injected anomalies. Ours reports the responsible branch per event (hard rules with 15\,s dwell ramp, TCN frame score, or fluxev $=\max(\mathrm{EVT},\text{rules})$); all methods share the same \texttt{sklearn.roc\_auc\_score}. Best per row in bold.}
+\label{tab:lit}
+\begin{tabular}{lcccc}
+\hline
+\textbf{Event} & \textbf{Ours (dual-branch)} & \textbf{SPOT'\,17} & \textbf{GRADINGS'\,20} & \textbf{ICHCI'\,21 (AE)} \\
+\hline
+Lingering & \textbf{0.974} & 0.952 & 0.374 & 0.362 \\
+Intrusion & \textbf{1.000} & 0.518 & 0.480 & 0.462 \\
+Gathering & \textbf{0.937} & 0.502 & 0.485 & 0.475 \\
+Wandering & \textbf{0.701} & 0.511 & 0.437 & 0.387 \\
+Sprint & \textbf{0.729} & 0.624 & 0.549 & 0.508 \\
+Zigzag & \textbf{0.547} & 0.479 & 0.440 & 0.387 \\
+Sudden~stop & \textbf{0.754} & 0.670 & 0.300 & 0.312 \\
+\hline
+Coverage $>0.55$ & 6/7 & 3/7 & 0/7 & 0/7 \\
+\hline
+\end{tabular}
+\end{table}

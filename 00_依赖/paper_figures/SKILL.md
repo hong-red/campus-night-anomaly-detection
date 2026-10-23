@@ -49,7 +49,7 @@ apply_nature_style()          # 投稿版；中文报告/答辩图改用 apply_c
 
 - 消融 AUROC：`tcn_dl_branch/results/fusion_ablation.json`（7 事件 × 4 检测器）
 - 规则域准确率：`tcn_dl_branch/results/rule_accuracy.json`（`per_event[k].specific_rule.acc`）
-- TCN 窗口级 P/R/F1：`tcn_dl_branch/results/dl_dwell_wander.json`
+- TCN 窗口级 P/R/F1（窗口级口径，非主表帧级）：`tcn_dl_branch/results/dl_dwell_wander.json`
 - ROC 数据：`tcn_dl_branch/results/fusion_roc_data.json`
 
 ## 图表模板

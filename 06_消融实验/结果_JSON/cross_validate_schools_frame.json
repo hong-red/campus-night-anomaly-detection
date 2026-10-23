@@ -1,0 +1,26 @@
+{
+  "wandering": {
+    "geo_sdd": 0.83,
+    "sdd_geo": 0.862,
+    "geo_geo": 0.9,
+    "sdd_sdd": 0.84
+  },
+  "loitering": {
+    "geo_sdd": 0.457,
+    "sdd_geo": 0.109,
+    "geo_geo": 0.112,
+    "sdd_sdd": 0.479
+  },
+  "sprint": {
+    "geo_sdd": 0.728,
+    "sdd_geo": 0.817,
+    "geo_geo": 0.801,
+    "sdd_sdd": 0.735
+  },
+  "zigzag": {
+    "geo_sdd": 0.794,
+    "sdd_geo": 0.793,
+    "geo_geo": 0.806,
+    "sdd_sdd": 0.813
+  }
+}

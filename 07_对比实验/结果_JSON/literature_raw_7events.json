@@ -1,0 +1,57 @@
+{
+  "level": "frame",
+  "trajectories": 50,
+  "source": "same 50 Geolife walking trajectories as the main 3-column table (scan_walking_trajectories min_dur=900, natural-stationary>120s removed)",
+  "rule_domain": {
+    "dwell": {
+      "spot": 0.952,
+      "gradings": 0.374,
+      "ae": 0.362,
+      "lstm": 0.251
+    },
+    "geofence": {
+      "spot": 0.518,
+      "gradings": 0.48,
+      "ae": 0.462,
+      "lstm": 0.459
+    },
+    "gather": {
+      "spot": 0.502,
+      "gradings": 0.485,
+      "ae": 0.475,
+      "lstm": 0.451
+    }
+  },
+  "motion_domain": {
+    "wandering": {
+      "spot": 0.511,
+      "gradings": 0.437,
+      "ae": 0.387,
+      "lstm": 0.713
+    },
+    "sprint": {
+      "spot": 0.624,
+      "gradings": 0.549,
+      "ae": 0.508,
+      "lstm": 0.863
+    },
+    "zigzag": {
+      "spot": 0.479,
+      "gradings": 0.44,
+      "ae": 0.387,
+      "lstm": 0.546
+    }
+  },
+  "ours_motion_frame": {
+    "wandering": 0.701,
+    "sprint": 0.729,
+    "zigzag": 0.547
+  },
+  "sudden_stop": {
+    "ours_fluxev_50traj": 0.754,
+    "spot": 0.67,
+    "gradings": 0.3,
+    "ae": 0.312,
+    "note": "50-traj frame-level fluxev=max(EVT,rules); the 0.716 figure was the earlier 120-traj version"
+  }
+}

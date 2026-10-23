@@ -1,19 +1,20 @@
-\begin{table}[htbp]
-\caption{Literature comparison: AUROC across six real-trajectory events, all on the same Geolife walking trajectories. Ours uses the responsible branch per event (hard rules with a 15-s dwell ramp for the rule domain, TCN for the motion domain), following the division of labour in Table~\ref{tab:ablation}. All events are scored frame-wise except wandering, which is scored at window level (the TCN's natural granularity, consistent with Table~6). Best per row in bold.}
-\begin{center}
+\begin{table}[t]
+\centering
+\caption{Frame-level AUROC across seven events on 50 Geolife walking trajectories with identical injected anomalies. Ours reports the responsible branch per event (hard rules with 15\,s dwell ramp, TCN frame score, or fluxev $=\max(\mathrm{EVT},\text{rules})$); all methods share the same \texttt{sklearn.roc\_auc\_score}. Best per row in bold.}
+\label{tab:lit}
 \begin{tabular}{lcccc}
 \hline
-\textbf{Event} & \textbf{Ours} & \textbf{IJGI\cite{ijgi}} & \textbf{Appl.Sci.\cite{applsci}} & \textbf{SPOT\cite{spot}} \\
+\textbf{Event} & \textbf{Ours (dual-branch)} & \textbf{SPOT'\,17} & \textbf{GRADINGS'\,20} & \textbf{ICHCI'\,21 (AE)} \\
 \hline
-Dwell ($>$5 min) & \textbf{0.974} & 0.796 & 0.947 & 0.952 \\
-Geofence intrusion & \textbf{1.000} & 0.913 & 0.583 & 0.518 \\
-Off-hours gathering & \textbf{0.937} & 0.857 & 0.491 & 0.502 \\
-Wandering (window-level) & \textbf{0.774} & 0.713 & 0.693 & 0.516 \\
-Sprinting & \textbf{0.729} & 0.437 & 0.462 & 0.624 \\
-Zigzag & \textbf{0.547} & 0.506 & 0.489 & 0.479 \\
+Lingering & \textbf{0.974} & 0.952 & 0.374 & 0.362 \\
+Intrusion & \textbf{1.000} & 0.518 & 0.480 & 0.462 \\
+Gathering & \textbf{0.937} & 0.502 & 0.485 & 0.475 \\
+Wandering & \textbf{0.701} & 0.511 & 0.437 & 0.387 \\
+Sprint & \textbf{0.729} & 0.624 & 0.549 & 0.508 \\
+Zigzag & \textbf{0.547} & 0.479 & 0.440 & 0.387 \\
+Sudden~stop & \textbf{0.754} & 0.670 & 0.300 & 0.312 \\
 \hline
-Coverage & 5/6 & 4/6 & 3/6 & 2/6 \\
+Coverage $>0.55$ & 6/7 & 3/7 & 0/7 & 0/7 \\
 \hline
 \end{tabular}
-\end{center}
 \end{table}
