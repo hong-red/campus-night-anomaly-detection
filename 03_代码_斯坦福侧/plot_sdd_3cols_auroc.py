@@ -61,9 +61,9 @@ fig, ax = plt.subplots(figsize=(11.5, 5.8))
 x = np.arange(len(ORDER))
 w = 0.32
 
-ax.bar(x - w, hard_v, w, color=COLOR["hard"], label="Hard (if-rules)", zorder=3)
-ax.bar(x, soft_v, w, color=COLOR["soft"], label="Soft (TCN)", zorder=3)
-ax.bar(x + w, fused_v, w, color=COLOR["fused"], label="Hard+Soft (max)", zorder=3)
+ax.bar(x - w, hard_v, w, color=COLOR["hard"], label="EVT", zorder=3)
+ax.bar(x, soft_v, w, color=COLOR["soft"], label="TCN", zorder=3)
+ax.bar(x + w, fused_v, w, color=COLOR["fused"], label="EVT+TCN", zorder=3)
 
 for xi, v in enumerate(hard_v):
     ax.text(xi - w, v + 0.012, f"{v:.2f}", ha="center", va="bottom", fontsize=15)
@@ -84,7 +84,7 @@ ax.grid(axis="y", color="#e6e6e6", lw=0.6)
 ax.legend(frameon=False, loc="upper center", bbox_to_anchor=(0.5, 1.04),
           ncol=3, fontsize=19, handlelength=1.4, columnspacing=1.3)
 
-ax.set_title("Stanford Drone Hard vs Soft vs Hard+Soft (AUROC)",
+ax.set_title("Stanford Drone EVT vs TCN vs EVT+TCN (AUROC)",
              fontsize=26, pad=8)
 
 

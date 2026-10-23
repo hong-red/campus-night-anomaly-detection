@@ -1,0 +1,83 @@
+{
+  "order": [
+    "dwell",
+    "geofence",
+    "gather",
+    "wandering",
+    "sprint",
+    "zigzag",
+    "sudden-stop"
+  ],
+  "labels": {
+    "dwell": "Lingering",
+    "geofence": "Intrusion",
+    "gather": "Gathering",
+    "wandering": "Wandering",
+    "sprint": "Sprint",
+    "zigzag": "Zigzag",
+    "sudden-stop": "Sudden stop"
+  },
+  "matrix": {
+    "dwell": {
+      "ours": 0.974,
+      "spot": 0.952,
+      "gradings": 0.374,
+      "ae": 0.362
+    },
+    "geofence": {
+      "ours": 1.0,
+      "spot": 0.518,
+      "gradings": 0.48,
+      "ae": 0.462
+    },
+    "gather": {
+      "ours": 0.937,
+      "spot": 0.502,
+      "gradings": 0.485,
+      "ae": 0.475
+    },
+    "wandering": {
+      "ours": 0.701,
+      "spot": 0.511,
+      "gradings": 0.437,
+      "ae": 0.387
+    },
+    "sprint": {
+      "ours": 0.729,
+      "spot": 0.624,
+      "gradings": 0.549,
+      "ae": 0.508
+    },
+    "zigzag": {
+      "ours": 0.547,
+      "spot": 0.479,
+      "gradings": 0.44,
+      "ae": 0.387
+    },
+    "sudden-stop": {
+      "ours": 0.754,
+      "spot": 0.67,
+      "gradings": 0.3,
+      "ae": 0.312
+    }
+  },
+  "summary": {
+    "ours": {
+      "coverage": "6/7",
+      "n_covered": 6
+    },
+    "spot": {
+      "coverage": "3/7",
+      "n_covered": 3
+    },
+    "gradings": {
+      "coverage": "0/7",
+      "n_covered": 0
+    },
+    "ae": {
+      "coverage": "0/7",
+      "n_covered": 0
+    }
+  },
+  "note": "All events frame-level, 50 Geolife walking trajectories, same injected anomalies, same sklearn.roc_auc_score. Ours uses the responsible branch per event (hard rules lo=15s / TCN frame / fluxev=max(EVT,rules))."
+}

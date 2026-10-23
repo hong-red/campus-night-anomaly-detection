@@ -1,17 +1,83 @@
 {
-  "order": ["dwell", "geofence", "gather", "wandering", "sprint", "zigzag"],
+  "order": [
+    "dwell",
+    "geofence",
+    "gather",
+    "wandering",
+    "sprint",
+    "zigzag",
+    "sudden-stop"
+  ],
+  "labels": {
+    "dwell": "Lingering",
+    "geofence": "Intrusion",
+    "gather": "Gathering",
+    "wandering": "Wandering",
+    "sprint": "Sprint",
+    "zigzag": "Zigzag",
+    "sudden-stop": "Sudden stop"
+  },
   "matrix": {
-    "dwell":     {"ours_dual": 0.974, "ours_branch": "rules(lo=15)", "ijgi": 0.796, "applsci": 0.947, "spot": 0.952},
-    "geofence":  {"ours_dual": 1.000, "ours_branch": "rules(lo=15)", "ijgi": 0.913, "applsci": 0.583, "spot": 0.518},
-    "gather":    {"ours_dual": 0.937, "ours_branch": "rules(lo=15)", "ijgi": 0.857, "applsci": 0.491, "spot": 0.502},
-    "wandering": {"ours_dual": 0.774, "ours_branch": "TCN(window)", "ijgi": 0.713, "applsci": 0.693, "spot": 0.516},
-    "sprint":    {"ours_dual": 0.729, "ours_branch": "TCN(frame)", "ijgi": 0.437, "applsci": 0.462, "spot": 0.624},
-    "zigzag":    {"ours_dual": 0.547, "ours_branch": "TCN(frame)", "ijgi": 0.506, "applsci": 0.489, "spot": 0.479}
+    "dwell": {
+      "ours": 0.974,
+      "spot": 0.952,
+      "gradings": 0.374,
+      "ae": 0.362
+    },
+    "geofence": {
+      "ours": 1.0,
+      "spot": 0.518,
+      "gradings": 0.48,
+      "ae": 0.462
+    },
+    "gather": {
+      "ours": 0.937,
+      "spot": 0.502,
+      "gradings": 0.485,
+      "ae": 0.475
+    },
+    "wandering": {
+      "ours": 0.701,
+      "spot": 0.511,
+      "gradings": 0.437,
+      "ae": 0.387
+    },
+    "sprint": {
+      "ours": 0.729,
+      "spot": 0.624,
+      "gradings": 0.549,
+      "ae": 0.508
+    },
+    "zigzag": {
+      "ours": 0.547,
+      "spot": 0.479,
+      "gradings": 0.44,
+      "ae": 0.387
+    },
+    "sudden-stop": {
+      "ours": 0.754,
+      "spot": 0.67,
+      "gradings": 0.3,
+      "ae": 0.312
+    }
   },
   "summary": {
-    "ours_dual": {"coverage": "5/6", "n_covered": 5},
-    "ijgi":      {"coverage": "4/6", "n_covered": 4},
-    "applsci":   {"coverage": "3/6", "n_covered": 3},
-    "spot":      {"coverage": "2/6", "n_covered": 2}
-  }
+    "ours": {
+      "coverage": "6/7",
+      "n_covered": 6
+    },
+    "spot": {
+      "coverage": "3/7",
+      "n_covered": 3
+    },
+    "gradings": {
+      "coverage": "0/7",
+      "n_covered": 0
+    },
+    "ae": {
+      "coverage": "0/7",
+      "n_covered": 0
+    }
+  },
+  "note": "All events frame-level, 50 Geolife walking trajectories, same injected anomalies, same sklearn.roc_auc_score. Ours uses the responsible branch per event (hard rules lo=15s / TCN frame / fluxev=max(EVT,rules))."
 }

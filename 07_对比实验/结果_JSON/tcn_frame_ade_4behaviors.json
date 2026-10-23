@@ -1,0 +1,50 @@
+{
+  "sprint": {
+    "label_en": "Sprinting",
+    "label_cn": "疾跑",
+    "level": "frame",
+    "auroc": 0.7505,
+    "ade_anomaly": 22.67,
+    "ade_normal": 9.9,
+    "n_frames": 16662,
+    "n_pos": 5972,
+    "n_neg": 10690,
+    "n_traj": 41
+  },
+  "wandering": {
+    "label_en": "Loitering",
+    "label_cn": "徘徊",
+    "level": "frame",
+    "auroc": 0.7352,
+    "ade_anomaly": 14.21,
+    "ade_normal": 8.98,
+    "n_frames": 16662,
+    "n_pos": 5972,
+    "n_neg": 10690,
+    "n_traj": 41
+  },
+  "zigzag": {
+    "label_en": "Zigzag",
+    "label_cn": "蛇形",
+    "level": "frame",
+    "auroc": 0.6091,
+    "ade_anomaly": 6.4,
+    "ade_normal": 5.68,
+    "n_frames": 16662,
+    "n_pos": 5972,
+    "n_neg": 10690,
+    "n_traj": 41
+  },
+  "sudden-stop": {
+    "label_en": "Sudden stop",
+    "label_cn": "急停",
+    "level": "frame",
+    "auroc": 0.0752,
+    "ade_anomaly": 7.25,
+    "ade_normal": 8.53,
+    "n_frames": 16662,
+    "n_pos": 5972,
+    "n_neg": 10690,
+    "n_traj": 41
+  }
+}
