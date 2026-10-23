@@ -7,8 +7,7 @@
 
 用法
 ----
-    import sys; sys.path.insert(0, r"F:\\仿真跑")          # 复用项目里的模块时
-    sys.path.insert(0, r"F:\\仿真跑\\.claude\\skills\\paper-figures")
+    import sys, os; sys.path.insert(0, os.path.dirname(__file__))   # style.py 所在目录
     import matplotlib.pyplot as plt
     from style import (apply_nature_style, apply_cn_style, C, BRANCH_COLOR,
                        DOMAIN_COLOR, SINGLE_COL, DOUBLE_COL, MM,

@@ -261,5 +261,3 @@ s_dl   = tcn_frame_scores(model, x, y, 16, 8, stats)   # 整条轨迹 → 逐时
 | `fig1~fig7_*.png/.svg` | 7 张出版级图 |
 
 ---
-
-*文档由 Claude Code 生成；满规模结果已回填（v1.1，2026-10-16）。*

@@ -18,10 +18,18 @@ import sys
 import json
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
-_CALIB = r"F:\仿真跑\同学思路对比_校准"
-_SDD = r"F:\Stanford_Drone\results"
-_NEW = r"F:\双分支实验_完整交付\07_对比实验\结果_JSON"
-sys.path.insert(0, r"F:\仿真跑\.claude\skills\paper-figures")
+_cur = _HERE
+for _i in range(6):
+    if os.path.exists(os.path.join(_cur, "_paths.py")):
+        sys.path.insert(0, _cur)
+        break
+    _cur = os.path.dirname(_cur)
+import _paths as _PKGP
+
+_ABL = os.path.join(_PKGP.ROOT, "06_消融实验", "结果_JSON")
+_SDD = os.path.join(_PKGP.CODE_STANFORD, "results")
+_NEW = os.path.join(_HERE, "结果_JSON")
+sys.path.insert(0, _PKGP.STYLE_DIR)
 
 import numpy as np
 import matplotlib
@@ -41,8 +49,8 @@ for _k in ("font.size", "axes.labelsize", "axes.titlesize",
     plt.rcParams[_k] *= 2
 
 # ---------------- 数据源 ----------------
-hard = json.load(open(os.path.join(_CALIB, "hard_accuracy_6behaviors.json"), encoding="utf-8"))
-final3 = json.load(open(os.path.join(_CALIB, "final_3cols_local.json"), encoding="utf-8"))
+hard = json.load(open(os.path.join(_ABL, "hard_accuracy_6behaviors.json"), encoding="utf-8"))
+final3 = json.load(open(os.path.join(_ABL, "final_3cols_local.json"), encoding="utf-8"))
 sdd_fw = json.load(open(os.path.join(_SDD, "sdd_fusion_framewise.json"), encoding="utf-8"))
 ss_geo = json.load(open(os.path.join(_NEW, "geo_sudden_stop_50.json"), encoding="utf-8"))
 ss_sdd = json.load(open(os.path.join(_NEW, "sdd_sudden_stop_3978.json"), encoding="utf-8"))
