@@ -15,7 +15,7 @@
 | **EVT / 规则分支**（硬） | FluxEV-SPOT（EVT 无监督）+ dwell/gather/geofence 硬规则 | 无 | 长时间停留 / 地理围栏闯入 / 多人聚集 / 急停 |
 | **深度学习分支**（软） | 自监督 TCN 轨迹预测（ADE 误差打分） | 只训正常轨迹 | 徘徊 / 疾跑 / 蛇形 等隐蔽运动异常 |
 
-**核心结论**：规则分支管「规则域」（静止/空间/跨轨迹共现，对 TCN 不可见）；DL 分支管「预测域」（运动模式，对 FluxEV 不可见）；两者按「负责分支」**取 max 相加（硬加软 = max(硬,软)，不是平均）**效果最好（斯坦福侧均值 AUROC 0.824，显著高于单独硬规则 0.694 / 单独深度学习 0.664），且**跨校互为验证集通过**（迁移 ≈ 域内）。六行为分工：**2× if-else（闯入/聚集）+ 1× if-else+EVT（逗留）+ 3× TCN（徘徊/疾跑/蛇形）**。
+**核心结论**：规则分支管「规则域」（静止/空间/跨轨迹共现，对 TCN 不可见）；DL 分支管「预测域」（运动模式，对 FluxEV 不可见）；两者按「负责分支」**取 max 相加（硬加软 = max(硬,软)，不是平均）**效果最好（斯坦福侧均值 AUROC 0.824，显著高于单独硬规则 0.694 / 单独深度学习 0.664），且**跨校互为验证集通过**（迁移 ≈ 域内）。七行为分工：**3× if-else（逗留/闯入/聚集）+ 3× TCN（徘徊/疾跑/蛇形）+ 1× EVT（急停）**。
 
 ---
 
@@ -123,7 +123,7 @@
 | `tcn_dl_branch/compare_methods.py` | 方案1 vs 方案2 对比 |
 | `tcn_dl_branch/fusion_experiment.py` `fusion_recalib.py` `collect_roc_sweep.py` | 融合实验 / 重标定 / ROC 扫描 |
 | `同学思路对比_校准/calibrate_*.py` `eval_*.py` `improve_dwell.py` `dwell_threshold_sweep.py` | **最新（10-19）校准实验**：dwell 阈值、EVT 极值增益、硬软相加口径 |
-| `文献对比/compare_literature.py` | 三篇文献（SPOT/IJGI/Appl.Sci.）忠实复现 + 对比 |
+| `文献对比/compare_literature.py` | 三篇文献（SPOT'17 / GRADINGS'20 / ICHCI'21）忠实复现 + 对比 |
 | `文献对比/export_lit_compare.py` | 导出 CSV + LaTeX 表 |
 
 ### 4.2 斯坦福侧（SDD）
@@ -135,9 +135,10 @@
 | `experiment_rule_advantage_sdd.py` | 实验1：if 规则优势 + 准确率 |
 | `eval_dwell_wander_sdd.py` | 实验2：TCN 对逗留/徘徊 P/R |
 | `fusion_ablation_sdd.py` | 实验3：三路消融 + 表1 + 突停门控 |
-| `cross_validate_schools.py` | 实验4：两校互为验证集（跨数据集泛化） |
+| `cross_validate_schools.py` | 实验4：两校互为验证集（窗口级，存档） |
 | `cross_validate_schools_3beh.py` | 3 行为跨校验证（窗口级） |
-| `cross_validate_schools_frame.py` | **帧级跨校验证（主口径，与主表一致）→ esults/cross_validate_schools_frame.json** |
+| `cross_validate_schools_frame.py` | **帧级跨校验证（主口径，与主表一致）→ 
+esults/cross_validate_schools_frame.json** |
 | `eval_fusion_sdd_framewise.py` | SDD 逐帧融合 |
 | `baseline_comparison.py` | 基线对比 |
 
@@ -145,7 +146,7 @@
 
 ## 5. 实验矩阵与结论
 
-### 5.0 六行为三栏（硬 / 软 / 硬加软）—— 最终主表
+### 5.0 七行为三栏（硬 / 软 / 硬加软）—— 最终主表
 
 > 最终口径：**硬 = if 规则 max(dwell[lo=15s], gather, geofence)；软 = 本地 TCN(z-clip)；硬加软 = 逐事件 max(硬,软)（分工，不是平均）**。主指标 AUROC（0.5=随机）。数据源：清华 `final_3cols_local.json`、斯坦福 `sdd_fusion_framewise.json`。
 
@@ -155,10 +156,11 @@
 |---|---|---|---|---|
 | Intrusion 闯入 | if-else | 1.000 | 0.488 | **1.000** |
 | Gathering 聚集 | if-else | 0.937 | 0.502 | **0.937** |
-| Lingering 逗留 | if-else+EVT | 0.974 | 0.374 | **0.974** |
+| Lingering 逗留 | if-else | 0.974 | 0.374 | **0.974** |
 | Wandering 徘徊 | TCN | 0.475 | 0.701 | **0.701** |
 | Sprint 疾跑 | TCN | 0.482 | 0.729 | **0.729** |
 | Zigzag 蛇形 | TCN | 0.475 | 0.547 | **0.547** |
+| Sudden stop 急停 | EVT | 0.754 | 0.342 | **0.754** |
 
 **斯坦福 SDD**
 
@@ -166,10 +168,11 @@
 |---|---|---|---|---|
 | Intrusion | if-else | 1.000 | 0.496 | **1.000** |
 | Gathering | if-else | 0.969 | 0.590 | **0.969** |
-| Lingering | if-else+EVT | 0.762 | 0.458 | **0.762** |
+| Lingering | if-else | 0.762 | 0.458 | **0.762** |
 | Wandering | TCN | 0.492 | 0.891 | **0.891** |
 | Sprint | TCN | 0.496 | 0.842 | **0.842** |
 | Zigzag | TCN | 0.492 | 0.855 | **0.855** |
+| Sudden stop 急停 | EVT | 0.737 | 0.478 | **0.737** |
 
 ### 5.1 三路消融（核心表）—— 规则域靠 if 规则 / 运动域靠 TCN / 融合覆盖全部
 
@@ -189,7 +192,7 @@ AUROC，0.5 = 随机。**加粗 = 该行为最优检测器**。
 > 清华侧数据：`06_消融实验/结果_JSON/fusion_ablation.json`；斯坦福侧：`sdd_fusion_ablation.json`。
 > **口径**：`fused` 是**逐帧** `max(分数)`（分数层融合）后再算 AUROC，因此 `fused` 列**不等于**「另两列的 AUROC 取 max」——AUROC 不是可交换运算（例：清华逗留 `max(0.687, 0.481)=0.687`，但 fused `= 0.679`）。
 > 斯坦福侧此处 `fused` 即 naive max（与门控列区分，门控列见 `结论汇总.md` §五）。
-> 图：`fusion_ablation_bars/table.png`、`sdd_fusion_ablation_bars/table.png`、`fig_六行为_*`。
+> 图：`fusion_ablation_bars/table.png`、`sdd_fusion_ablation_bars/table.png`、`fig_六行为_*`（六行为图；急停见 `fig_四合一_evt_tcn_新急停.png`）。
 
 
 
@@ -210,7 +213,7 @@ AUROC，0.5 = 随机。**加粗 = 该行为最优检测器**。
 
 ### 5.3 文献对比（我们 vs 三篇文献）
 
-6 事件 × 4 方法 AUROC，同一批 Geolife 轨迹注入同一批异常，同一 `sklearn.roc_auc_score`：
+7 事件 × 4 方法 AUROC，同一批 50 条 Geolife 轨迹注入同一批异常，同一 `sklearn.roc_auc_score`，全帧级：
 
 | Event | **Ours（双分支）** | SPOT'17 | GRADINGS'20 | ICHCI'21 (AE) |
 |---|---|---|---|---|
@@ -275,7 +278,7 @@ python 同学思路对比_校准/calibrate_dwell.py
 python 同学思路对比_校准/eval_hard_accuracy.py
 python 同学思路对比_校准/improve_dwell.py
 
-# 六行为三栏（硬/软/硬加软 = max，最终主表 §5.0）
+# 七行为三栏（硬/软/硬加软 = max，最终主表 §5.0）
 python 同学思路对比_校准/eval_and_plot_final_3cols.py      # → final_3cols_local.json
 python 同学思路对比_校准/plot_final_3cols_auroc.py         # 三栏 AUROC 图
 python 同学思路对比_校准/plot_final_3cols_max.py           # 三栏准确率图
@@ -291,7 +294,7 @@ python fusion_ablation_sdd.py
 python cross_validate_schools.py         # 补训 Geolife dt=1s TCN + 交叉验证（窗口级）
 python cross_validate_schools_frame.py   # 帧级跨校验证 → results/cross_validate_schools_frame.json
 
-# 斯坦福侧 六行为三栏（硬/软/硬加软 = max）
+# 斯坦福侧 七行为三栏（硬/软/硬加软 = max）
 python eval_fusion_sdd_framewise.py      # → results/sdd_fusion_framewise.json
 python plot_sdd_3cols_auroc.py           # 三栏 AUROC 图
 python plot_sdd_3cols_max.py             # 三栏准确率图
@@ -316,4 +319,4 @@ python plot_sdd_3cols_max.py             # 三栏准确率图
 3. **软+硬相加更好**：fused 均值 AUROC（清华 0.717 / 斯坦福 0.824）> 单独硬规则 ≈ 单独深度学习。
 4. **突停门控**：naive max 损害突停（清华 0.618→0.368、斯坦福 0.738→0.703），S_dl≥0.5 门限恢复。
 5. **两校互为验证集**：迁移≈域内（0.65≈0.66）；逗留盲区双向成立（全<0.5）。
-6. **文献对比全胜**：6 事件 AUROC 每一项都最高，且唯一相机-free/GPU-free/标注-free。
+6. **文献对比全胜**：7 事件 AUROC 每一项都最高，且唯一相机-free/GPU-free/标注-free。

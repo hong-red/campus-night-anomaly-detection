@@ -1,6 +1,6 @@
 # Stanford Drone Dataset —— 强约束 if 规则 + 深度学习 三路消融实验
 
-> 对应 `F:\仿真跑` 的国外对照实验（`experiment_rule_advantage.py` / `tcn_dl_branch/eval_dwell_wander.py` / `tcn_dl_branch/fusion_ablation.py`）。
+> 对应清华侧的国外对照实验（`experiment_rule_advantage.py` / `tcn_dl_branch/eval_dwell_wander.py` / `tcn_dl_branch/fusion_ablation.py`）。
 > 数据：SDD 真实俯拍行人轨迹（像素 → 米），TCN 在 SDD 正常行走上重训（dt=1s，同架构/同自监督目标）。
 
 ---

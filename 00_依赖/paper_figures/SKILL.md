@@ -13,8 +13,7 @@ description: 校园夜间安防论文的出版级 matplotlib 图。当用户要�
 
 ```python
 import sys, os
-sys.path.insert(0, r"F:\仿真跑")
-sys.path.insert(0, r"F:\仿真跑\.claude\skills\paper-figures")
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import matplotlib.pyplot as plt
 from style import (apply_nature_style, apply_cn_style, C, BRANCH_COLOR,
                    DOMAIN_COLOR, SINGLE_COL, DOUBLE_COL, MM,
@@ -138,5 +137,5 @@ diagram_arrow(ax, 6.0, 16.4, 3.0, 15.5, rad=0.15)  # 分叉弧线
 
 ## 常用参考
 
-- 现有成品可参照：`F:\仿真跑\make_nature_figs.py`（fig1–fig6 全套）、`tcn_dl_branch\fusion_ablation.py`（消融条图/表）、`tcn_dl_branch\make_behavior_taxonomy.py`、`tcn_dl_branch\make_rule_accuracy.py`。
+- 现有成品可参照：`02_代码_清华侧\make_nature_figs.py`（fig1–fig6 全套）、`tcn_dl_branch\fusion_ablation.py`（消融条图/表）、`tcn_dl_branch\make_behavior_taxonomy.py`、`tcn_dl_branch\make_rule_accuracy.py`。
 - 若做新图：先读对应 results JSON → 写脚本 → `apply_nature_style()` → `save()`。
