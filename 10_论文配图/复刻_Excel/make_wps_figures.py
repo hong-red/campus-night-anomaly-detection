@@ -193,8 +193,10 @@ colchart(ws, "A14",
 # ========================= 图5 融合策略对比 =========================
 ws = sheet("图5_融合策略对比")
 ws.write("A1", "Fusion strategy, naive max vs gated max (c=0.5)", title_fmt)
-fus = [("Wandering", .50, .67, .51), ("Sprint", .51, .79, .62),
-       ("Zigzag", .50, .61, .50), ("Sudden stop", .62, .37, .62)]
+M5 = json.load(open(J("07_对比实验", "结果_JSON", "fusion_ablation_unified.json"), encoding="utf-8"))
+behs5 = [("wandering", "Wandering"), ("sprint", "Sprint"),
+         ("zigzag", "Zigzag"), ("sudden-stop", "Sudden stop")]
+fus = [(l, M5[k]["fluxev"], M5[k]["naive"], M5[k]["gated"]) for k, l in behs5]
 fs = ["S_ev only", "Naive max", "Gated c=0.5"]
 fcol = [STEEL, SALMON, OLIVE]
 ws.write_row(2, 0, ["Behavior"] + fs, hdr)
@@ -208,7 +210,7 @@ colchart(ws, "A10",
           for j in range(3)],
          ["图5_融合策略对比", 3, 0, last, 0],
          "Fusion strategy, naive max vs gated max (c=0.5)", "AUROC", 0.0, 1.0, w=820, h=460)
-ws.write(last + 3, 0, "Sudden stop: naive max 0.62→0.37, gated max 恢复至 0.62", note)
+ws.write(last + 3, 0, "Sudden stop: naive max 0.754→0.667, gated max 恢复至 0.735 (micro)", note)
 
 # ========================= 图6 TCN 训练曲线 =========================
 th = json.load(open(J("06_消融实验", "结果_JSON", "train_history_35.json"), encoding="utf-8"))

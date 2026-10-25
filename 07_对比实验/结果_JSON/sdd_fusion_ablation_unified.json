@@ -1,0 +1,58 @@
+{
+  "_meta": {
+    "level": "frame",
+    "aggregation": "micro",
+    "tcn_score": "z-clip",
+    "dt": 1.0,
+    "traj": "collect_sdd_walking(1.0,150,seed=7,min_len=60)"
+  },
+  "geofence": {
+    "rules": 1.0,
+    "fluxev": 1.0,
+    "dl": 0.4958,
+    "naive": 0.9874,
+    "gated": 0.9874
+  },
+  "gather": {
+    "rules": 0.9687,
+    "fluxev": 0.9687,
+    "dl": 0.5897,
+    "naive": 0.9608,
+    "gated": 0.9608
+  },
+  "dwell": {
+    "rules": 0.7618,
+    "fluxev": 0.7618,
+    "dl": 0.4579,
+    "naive": 0.7089,
+    "gated": 0.7271
+  },
+  "wandering": {
+    "rules": 0.4925,
+    "fluxev": 0.4925,
+    "dl": 0.891,
+    "naive": 0.8843,
+    "gated": 0.6703
+  },
+  "sprint": {
+    "rules": 0.4965,
+    "fluxev": 0.4965,
+    "dl": 0.8415,
+    "naive": 0.8358,
+    "gated": 0.6736
+  },
+  "zigzag": {
+    "rules": 0.4925,
+    "fluxev": 0.4925,
+    "dl": 0.8549,
+    "naive": 0.8454,
+    "gated": 0.5334
+  },
+  "sudden-stop": {
+    "rules": 0.7373,
+    "fluxev": 0.7373,
+    "dl": 0.478,
+    "naive": 0.6806,
+    "gated": 0.7019
+  }
+}

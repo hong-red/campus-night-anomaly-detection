@@ -1,0 +1,59 @@
+{
+  "_meta": {
+    "level": "frame",
+    "aggregation": "micro",
+    "tcn_score": "z-clip",
+    "dt": 2.0,
+    "rules_6beh": "if规则 lo=15s",
+    "rules_sudden_stop": "res[dwell] lo=120s"
+  },
+  "geofence": {
+    "rules": 1.0,
+    "fluxev": 0.9864,
+    "dl": 0.4879,
+    "naive": 0.9828,
+    "gated": 0.9828
+  },
+  "gather": {
+    "rules": 0.9367,
+    "fluxev": 0.9229,
+    "dl": 0.5024,
+    "naive": 0.9194,
+    "gated": 0.9194
+  },
+  "dwell": {
+    "rules": 0.9739,
+    "fluxev": 0.7745,
+    "dl": 0.3739,
+    "naive": 0.7044,
+    "gated": 0.7471
+  },
+  "wandering": {
+    "rules": 0.475,
+    "fluxev": 0.4954,
+    "dl": 0.7014,
+    "naive": 0.6824,
+    "gated": 0.497
+  },
+  "sprint": {
+    "rules": 0.4824,
+    "fluxev": 0.5105,
+    "dl": 0.7291,
+    "naive": 0.7164,
+    "gated": 0.582
+  },
+  "zigzag": {
+    "rules": 0.475,
+    "fluxev": 0.4911,
+    "dl": 0.5474,
+    "naive": 0.5408,
+    "gated": 0.4902
+  },
+  "sudden-stop": {
+    "rules": 0.7868,
+    "fluxev": 0.7538,
+    "dl": 0.342,
+    "naive": 0.6669,
+    "gated": 0.7346
+  }
+}
