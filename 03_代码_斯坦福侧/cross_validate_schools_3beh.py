@@ -55,32 +55,20 @@ BEHAVIORS = [("wandering", "Wandering", T.inject_loiter),
 
 
 def main():
-    obs, pred = 16, 8
+    combos = [("geo_geo", "Geo→Geo (in)"),
+              ("geo_sdd", "Geo→SDD (trans)"),
+              ("sdd_sdd", "SDD→SDD (in)"),
+              ("sdd_geo", "SDD→Geo (trans)")]
 
-    print("加载 checkpoint（不重训）...")
-    geo_model, _, _ = T.load_predictor(GEO_TCN_DT1)
-    sdd_model, _, _ = S.ensure_sdd_tcn()
-    print(f"  Geo 模型: {GEO_TCN_DT1}")
-    print(f"  SDD 模型: {S.SDD_TCN_CKPT}")
+    print("读取现成帧级数据（cross_validate_schools_frame.json）...")
+    _frame_json = os.path.join(S.RESULTS_DIR, "cross_validate_schools_frame.json")
+    frame = json.load(open(_frame_json, encoding="utf-8"))
+    print(f"  {_frame_json}")
 
-    print("准备测试集(dt=1s, 留出, seed=42)...")
-    sdd_test = [(x, y) for _, x, y, _ in S.collect_sdd_walking(1.0, 100, seed=42, min_len=48)]
-    geo_test = [(x, y) for x, y, *_ in T.collect_walking_trajectories(T.DEFAULT_DATA, 1.0,
-                                                                      100, seed=42)]
-    print(f"  Stanford 测试轨迹 = {len(sdd_test)}，Geolife 测试轨迹 = {len(geo_test)}")
+    print("\n帧级跨校 AUROC（3 行为 × 4 train→test 组合）：")
+    matrix = {k: {ck: frame[k][ck] for ck, *_ in combos} for k, _, _ in BEHAVIORS}
 
-    combos = [("geo_geo", "Geo→Geo (in)", geo_model, geo_test),
-              ("geo_sdd", "Geo→SDD (trans)", geo_model, sdd_test),
-              ("sdd_sdd", "SDD→SDD (in)", sdd_model, sdd_test),
-              ("sdd_geo", "SDD→Geo (trans)", sdd_model, geo_test)]
-
-    print("\n交叉验证 AUROC（3 行为 × 4 train→test 组合）：")
-    matrix = {k: {} for k, _, _ in BEHAVIORS}
-    for key, en, inj in BEHAVIORS:
-        for ck, cname, model, tracks in combos:
-            matrix[key][ck] = round(CS.window_auroc(model, obs, pred, tracks, inj), 3)
-
-    hdr = "".join(f"{cname:<22}" for _, cname, _, _ in combos)
+    hdr = "".join(f"{cname:<22}" for _, cname in combos)
     print(f"{'behavior':<12}{hdr}")
     print("-" * 96)
     for key, en, _ in BEHAVIORS:
@@ -95,28 +83,29 @@ def main():
     json.dump(matrix, open(os.path.join(S.RESULTS_DIR, "cross_validate_schools_3beh.json"), "w"),
               ensure_ascii=False, indent=2)
 
-    # ---- 图 ----
+    # ---- 图（横向条形图） ----
     COLOR = {"geo_geo": "#9ec5f4", "geo_sdd": "#2a78d6",
              "sdd_sdd": "#f6c9a8", "sdd_geo": "#eb6834"}
-    fig, ax = plt.subplots(figsize=(10.5, 5.0))
-    x = np.arange(len(BEHAVIORS)); w = 0.19
+    fig, ax = plt.subplots(figsize=(10.5, 6.0))
+    y = np.arange(len(BEHAVIORS)); h = 0.19
     for j, (ck, cname, *_rest) in enumerate(combos):
-        off = -1.5 * w + j * w
+        off = -1.5 * h + j * h
         vals = [matrix[k][ck] for k, _, _ in BEHAVIORS]
-        ax.bar(x + off, vals, w, color=COLOR[ck], zorder=3, label=cname)
-        for xi, v in zip(x + off, vals):
-            ax.text(xi, v + 0.015, f"{v:.2f}", ha="center", va="bottom", fontsize=14)
-    ax.set_xticks(x)
-    ax.set_xticklabels([en for _, en, _ in BEHAVIORS], fontsize=18)
-    ax.set_ylabel("AUROC", fontsize=22)
-    ax.set_ylim(0, 1.12)
-    ax.set_yticks([0, 0.25, 0.5, 0.75, 1.0])
+        ax.barh(y + off, vals, h, color=COLOR[ck], zorder=3, label=cname)
+        for yi, v in zip(y + off, vals):
+            ax.text(v + 0.012, yi, f"{v:.2f}", ha="left", va="center", fontsize=14)
+    ax.set_yticks(y)
+    ax.set_yticklabels([en for _, en, _ in BEHAVIORS], fontsize=18)
+    ax.set_xlabel("AUROC", fontsize=22)
+    ax.set_xlim(0, 1.12)
+    ax.set_xticks([0, 0.25, 0.5, 0.75, 1.0])
     ax.set_axisbelow(True)
-    ax.grid(axis="y", color="#e6e6e6", lw=0.6)
-    ax.legend(frameon=False, loc="upper right", ncol=2, fontsize=17,
-              handlelength=1.2, columnspacing=1.0)
-    ax.set_title("Cross-dataset generalization — TCN branch (3 motion behaviours)",
-                 fontsize=25, pad=10)
+    ax.grid(axis="x", color="#e6e6e6", lw=0.6)
+    ax.legend(frameon=False, loc="lower center", bbox_to_anchor=(0.5, 1.02), ncol=4,
+              fontsize=17, handlelength=1.2, columnspacing=1.6)
+    ax.set_title("Frame-level cross-dataset generalization (AUROC)",
+                 fontsize=25, pad=34)
+    
     
     fig.tight_layout(rect=[0, 0.05, 1, 1])
     save(fig, "cross_validate_schools_3beh.png", outdir=S.RESULTS_DIR)
